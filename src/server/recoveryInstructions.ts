@@ -1,5 +1,17 @@
 // A host deadline can discard the response before error remediation reaches the
 // agent. Teach that distinction at initialization, not just in returned errors.
+
+export interface AnalysisErrorRecoveryGuidance {
+  /** The suggested action, e.g., 'retry', 'search', 'update_settings'. */
+  action: string;
+  /** The command, tool name, or argument set to use for recovery. */
+  instruction: string;
+  /** A concise message explaining the next step. */
+  message: string;
+  /** Optional metadata about the provider or failure category. */
+  metadata?: Record<string, string>;
+}
+
 const RECOVERY_START =
   "Recovery: Correct malformed arguments from the reported fields and connected schema; refresh tools/list only if stale. Do not repeat unchanged failures. A valid unresolved lookup is not an argument error or a completed reference search. Follow returned remediation for REA provider_timeout and resource errors; reuse partial Evidence. ";
 const RUNTIME_SETTINGS_RECOVERY =

@@ -21,6 +21,11 @@ export type AnalysisErrorRecovery =
       /** `operation` retries only retained cleanup on the same connection. */
       readonly kind: "retry_cleanup";
       readonly operation: string;
+    }
+  | {
+      readonly kind: "guidance";
+      readonly message: string;
+      readonly action: string;
     };
 
 /**
@@ -66,6 +71,13 @@ export const analysisErrorRecoverySchema: z.ZodType<AnalysisErrorRecovery> =
       .object({
         kind: z.literal("retry_cleanup"),
         operation: z.string().min(1),
+      })
+      .strict(),
+    z
+      .object({
+        kind: z.literal("guidance"),
+        message: z.string().min(1),
+        action: z.string().min(1),
       })
       .strict(),
   ]);
